@@ -8,6 +8,7 @@ window.geometry("400x300")
 
 quizzes = {}
 
+# this saves quizzes to a json file
 def save_quizzes_to_file(filename = "quizzes.json"):
     with open(filename,"w") as f:
         json.dump(quizzes,f)
