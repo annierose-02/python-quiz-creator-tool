@@ -12,7 +12,9 @@ quizzes = {}
 def save_quizzes_to_file(filename = "quizzes.json"):
     with open(filename,"w") as f:
         json.dump(quizzes,f)
-    
+
+#THis loads quizzes from file
+#    
 def load_quizzes_from_file(filename = "quizzes.json"):
     try:
         with open(filename,"r") as f:
