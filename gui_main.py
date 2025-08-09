@@ -59,6 +59,16 @@ def create_quiz():
         else:
             messagebox.showwarning("Missing Info","Please enter both a question and an answer")
 
+    def delete_question():
+        selected_index = questions_Listbox.curselection()
+        if selected_index:
+            index = selected_index[0]
+            questions_Listbox.delete(index)
+            del questions[index]
+            messagebox.showinfo("Deleted","Question deleted")
+        else:
+            messagebox.showwarning("Missing Info","Please select a question to delete")
+
     def finish_quiz():
         quiz_name = quiz_name_entry.get()
         if not quiz_name:
@@ -74,6 +84,7 @@ def create_quiz():
         create_window.destroy()
 
     tk.Button(create_window, text = "Add Question", command = add_question).pack(pady=5)
+    tk.Button(create_window , text="Delete Question",command=delete_question).pack(pady=5)
     tk.Button(create_window ,text="Finish quiz" , command = finish_quiz).pack(pady=10)
 
 
