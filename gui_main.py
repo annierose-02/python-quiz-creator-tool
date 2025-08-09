@@ -14,7 +14,7 @@ def save_quizzes_to_file(filename = "quizzes.json"):
         json.dump(quizzes,f)
 
 #THis loads quizzes from file
-#    
+   
 def load_quizzes_from_file(filename = "quizzes.json"):
     try:
         with open(filename,"r") as f:
@@ -42,6 +42,9 @@ def create_quiz():
     answer_entry.pack()
 
     questions = []
+
+    questions_Listbox = tk.Listbox(create_window, width=50,height=8)
+    questions_Listbox.pack(pady=5)
 
     def add_question():
         q = question_entry.get()
