@@ -52,6 +52,7 @@ def create_quiz():
         
         if q and a:
             questions.append((q,a))
+            questions_Listbox.insert(tk.END,f"Q: {q} | A: {a}")
             question_entry.delete(0,tk.END)
             answer_entry.delete(0,tk.END)
             messagebox.showinfo("Added","Question added.")
