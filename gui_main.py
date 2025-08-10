@@ -89,7 +89,33 @@ def create_quiz():
 
 
 def take_quiz():
-    messagebox.showinfo("Take a quiz", "This will open the take quiz window.")
+    take_window = tk.Toplevel(window)
+    take_window.title("Take a quiz")
+    take_window.geometry("400x400")
+
+    tk.Label(take_window, text="Select a quiz:").pack()
+
+    quiz_Listbox = tk.Listbox(take_window)
+    for quiz_name in quizzes.keys():
+        quiz_Listbox.insert(tk.END,quiz_name)
+    quiz_Listbox.pack(pady=10)
+
+    def start_selected_quiz():
+        selected = quiz_Listbox.curselection()
+        if not selected:
+            messagebox.showwarning("No quiz selected","Please select a quiz to take")
+            return
+        selected_quiz = quiz_Listbox.get(selected[0])
+        play_quiz(selected_quiz)
+        take_window.destroy()
+
+    tk.Button(take_window, text = "Take Quiz", command = take_quiz).pack(pady=5)
+    tk.Button(take_window, text = "Cancel", command = take_window.destroy).pack(pady=5)
+        
+
+
+def play_quiz():
+    messagebox.showinfo("Play a quiz","This will open the play a quiz window")
 
 def delete_quiz():
     messagebox.showinfo("Delete a quiz", "This will open the delete quiz window.")
