@@ -105,18 +105,62 @@ def take_quiz():
         if not selected:
             messagebox.showwarning("No quiz selected","Please select a quiz to take")
             return
-        selected_quiz = quiz_Listbox.get(selected[0])
-        play_quiz(selected_quiz)
+        quiz_name = quiz_Listbox.get(selected[0])
+        play_quiz(quiz_name) #playquiz function not defined yet
         take_window.destroy()
 
-    tk.Button(take_window, text = "Take Quiz", command = take_quiz).pack(pady=5)
+    tk.Button(take_window, text = "Start Quiz", command = start_selected_quiz).pack(pady=5)
     tk.Button(take_window, text = "Cancel", command = take_window.destroy).pack(pady=5)
         
+from tkinter import simpledialog
+
+def play_quiz(selected_quiz):
+    import tkinter as tk
+    from tkinter import messagebox
+
+    questions = quizzes[selected_quiz]
+    score = 0
+    current_index = 0
+
+    play_window = tk.Toplevel(window)
+    play_window.title(f"Play Quiz: {selected_quiz}")
+    play_window.geometry("400x300")
+
+    question_label = tk.Label(play_window, text="")
+    question_label.pack(pady =10)
+
+    answer_entry = tk.Entry(play_window)
+    answer_entry.pack(pady =5)
+
+    def load_question():
+        q, _ = questions[current_index]
+        question_label.config(text = f"Q {current_index + 1}: {q}")
+        answer_entry.delete(0,tk.END)
+
+    def next_question():
+
+        nonlocal score, current_index
+
+        user_answer = answer_entry.get()
+
+        if user_answer.strip().lower() == questions[current_index][1].strip().lower():
+            score = score + 1
+
+        current_index += 1
+
+        if current_index < len(questions):
+            load_question()
+        else:
+            messagebox.showinfo("Score",f"You scored {score} out of {len(questions)} on this quiz")
+            play_window.destroy()
+
+    next_button = tk.Button(play_window , text = "Next" , command = next_question)
+    next_button.pack(pady=5)
 
 
-def play_quiz():
-    messagebox.showinfo("Play a quiz","This will open the play a quiz window")
+    load_question()
 
+        
 def delete_quiz():
     messagebox.showinfo("Delete a quiz", "This will open the delete quiz window.")
 
