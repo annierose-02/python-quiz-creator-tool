@@ -138,25 +138,35 @@ def play_quiz(selected_quiz):
         answer_entry.delete(0,tk.END)
 
     def next_question():
-
         nonlocal score, current_index
-
         user_answer = answer_entry.get()
 
+        if not user_answer:
+            messagebox.showwarning("No answer","Please enter an answer before continuing")
+            return
+        
         if user_answer.strip().lower() == questions[current_index][1].strip().lower():
             score = score + 1
+        else:
+            messagebox.showinfo("Incorrect!",f"The correct answer was {questions[current_index][1]}")
 
         current_index += 1
-
         if current_index < len(questions):
             load_question()
         else:
             messagebox.showinfo("Score",f"You scored {score} out of {len(questions)} on this quiz")
             play_window.destroy()
 
+    def quit_quiz():
+        confirm = messagebox.askyesno("Quit quiz","Are you sure you want to quit?")
+        if confirm:
+            play_window.destroy()
+
+    
     next_button = tk.Button(play_window , text = "Next" , command = next_question)
     next_button.pack(pady=5)
-
+    quit_button = tk.Button(play_window , text = "Quit" , command = quit_quiz)
+    quit_button.pack(pady=5)
 
     load_question()
 
