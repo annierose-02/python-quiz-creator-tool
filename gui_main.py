@@ -121,6 +121,7 @@ def play_quiz(selected_quiz):
     questions = quizzes[selected_quiz]
     score = 0
     current_index = 0
+    user_answers = []
 
     play_window = tk.Toplevel(window)
     play_window.title(f"Play Quiz: {selected_quiz}")
@@ -137,6 +138,26 @@ def play_quiz(selected_quiz):
         question_label.config(text = f"Q {current_index + 1}: {q}")
         answer_entry.delete(0,tk.END)
 
+    def show_review():
+        review_window = tk.Toplevel(window)
+        review_window.title("Quiz review")
+        review_window.geometry("400x300")
+
+        tk.Label(review_window , text = f"Score: {score}/{len(questions)}", font = ("Helvetica",14,"bold")).pack(pady=10)
+
+        frame = tk.Frame(review_window)
+        frame.pack(fill = "both", expand = True)
+         
+        text = tk.Text(frame, wrap = "word", font=("Helvetica",12))
+        text.pack(fill = "both" , expand = True)
+
+        for i, (q,user_answer,correct_a) in enumerate (user_answers, start=1):
+            text.insert("end",f"Q{i}: {q}\n")
+            text.insert("end",f"Your answer: {user_answer}\n")
+            text.insert("end", f"Correct answer: {correct_a}\n\n")
+
+        text.config(state="disabled")
+        
     def next_question():
         nonlocal score, current_index
         user_answer = answer_entry.get()
@@ -145,22 +166,26 @@ def play_quiz(selected_quiz):
             messagebox.showwarning("No answer","Please enter an answer before continuing")
             return
         
+        q, a = questions[current_index]
+        user_answers.append((q , user_answer , a))
+        
         if user_answer.strip().lower() == questions[current_index][1].strip().lower():
             score = score + 1
-        else:
-            messagebox.showinfo("Incorrect!",f"The correct answer was {questions[current_index][1]}")
-
+        
+       
         current_index += 1
         if current_index < len(questions):
             load_question()
         else:
             messagebox.showinfo("Score",f"You scored {score} out of {len(questions)} on this quiz")
             play_window.destroy()
+            show_review()
 
     def quit_quiz():
         confirm = messagebox.askyesno("Quit quiz","Are you sure you want to quit?")
         if confirm:
             play_window.destroy()
+            show_review()
 
     
     next_button = tk.Button(play_window , text = "Next" , command = next_question)
