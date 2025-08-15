@@ -13,8 +13,7 @@ def save_quizzes_to_file(filename = "quizzes.json"):
     with open(filename,"w") as f:
         json.dump(quizzes,f)
 
-#THis loads quizzes from file
-   
+#this loads quizzes from file
 def load_quizzes_from_file(filename = "quizzes.json"):
     try:
         with open(filename,"r") as f:
@@ -156,7 +155,12 @@ def play_quiz(selected_quiz):
             text.insert("end",f"Your answer: {user_answer}\n")
             text.insert("end", f"Correct answer: {correct_a}\n\n")
 
+        scrollbar = tk.Scrollbar(frame , command = text.yview)
+        text.config(yscrollcommand=scrollbar.set)
+        scrollbar.pack(side = "right", fill = "y")
+
         text.config(state="disabled")
+        tk.Button(review_window, text="Back to Menu",command = review_window.destroy).pack(pady=10)
         
     def next_question():
         nonlocal score, current_index
